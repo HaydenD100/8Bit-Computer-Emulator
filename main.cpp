@@ -52,6 +52,8 @@ struct Memory
 	static constexpr int MAX_MEMORY = 65536; //2^16
 	uint8_t Data[MAX_MEMORY]; //255b of memory 
 
+	uint16_t ip = 0xE000;
+
 	void Initialize() {
 		for (int i = 0; i < MAX_MEMORY; i++) {
 			Data[i] = 0;
@@ -63,6 +65,71 @@ struct Memory
 	}
 	void WriteByte(uint16_t address, uint8_t byte) {
 		Data[address] = byte;
+	}
+
+
+
+	void CreateInsctruction(opCode code, Register reg1, Register reg2) {
+		uint8_t byte = code << 1;
+		byte = byte + 1;
+		byte = byte << 3;
+		byte = byte + reg1;
+		Data[ip] = byte;
+		ip++;
+		byte = reg2;
+		Data[ip] = byte;
+		ip++;
+
+		
+	}
+	void CreateInsctruction(opCode code, Register reg1, uint8_t value) {
+		uint8_t byte = code;
+		byte = byte << 4;
+		byte = byte + reg1;
+		Data[ip] = byte;
+		ip++;
+		byte = value;
+		Data[ip] = byte;
+		ip++;
+
+	}
+	void CreateInsctruction(opCode code, Register reg, uint16_t address) {
+		uint8_t byte = code << 1;
+		byte = byte + 1;
+		byte = byte << 3;
+		byte = byte + reg;
+		Data[ip] = byte;
+		ip++;
+		byte = address;
+		Data[ip] = byte;
+		ip++;
+		byte = address >> 8;
+		Data[ip] = byte;
+		ip++;
+	}
+	void CreateInsctruction(opCode code, uint16_t address) {
+		uint8_t byte = code << 4;
+		ip++;
+		byte = address;
+		Data[ip] = byte;
+		ip++;
+		byte = address >> 8;
+		Data[ip] = byte;
+		ip++;
+	}
+	void CreateInsctruction(opCode code,Flags flag) {
+		uint8_t byte = code << 4;
+		byte = byte + flag;
+		Data[ip] = byte;
+		ip++;
+	}
+	void CreateInsctruction(opCode code, Register reg) {
+		uint8_t byte = code << 1;
+		byte = byte + 1;
+		byte = byte << 3;
+		byte = byte + reg;
+		Data[ip] = byte;
+		ip++;
 	}
 
 };
@@ -87,6 +154,7 @@ struct CPU
 		PC = 0xE000; // Starts program pointer at memory address 57344
 		memory.Initialize();
 
+
 	}
 
 	void Execute(Memory &memory) {
@@ -94,19 +162,23 @@ struct CPU
 
 		uint8_t opCode = IR >> 4;
 		uint8_t valueTwo = NULL;
-		
+
 
 		switch (opCode)
 		{
 			case ADD: {
+
 				uint8_t reg = IR & 0b00000111;
+				
 				uint8_t value = NULL;
 				if ((IR & 0b00001000) == 0b00001000)
 				{
+					
 					PC++;
 					value = Register[memory.ReadByte(PC)];
 				}
 				else {
+					
 					PC++;
 					value = memory.ReadByte(PC);
 				}
@@ -331,24 +403,38 @@ int main(int argc, const char* argv[]) {
 	Memory memory;
 	cpu.Initialize(memory);
 	//XXXXYZZZ
-
+	/*
 	//loads register with value 0b00000011 to register 0b000
 	memory.WriteByte(0xE000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000011);
-	//outputs register 0b000 to terminal
-	memory.WriteByte(0xE002, 0b11110000);
+	memory.WriteByte(0xE001, 0b00000010);
+	//loads register with value 0b00000011 to register 0b001
+	memory.WriteByte(0xE002, 0b01110001);
+	memory.WriteByte(0xE003, 0b00000011);
+	//ADDS register A and B and stores results in A
+	memory.WriteByte(0xE004, 0b00011000);
+	memory.WriteByte(0xE005, 0b00000001);
+	//Prints out A
+	memory.WriteByte(0xE006, 0b11110000);
+	*/
+	
+	memory.CreateInsctruction(LR, A, (uint8_t)0b001);
+	memory.CreateInsctruction(LR, B, (uint8_t)0b101);
+	memory.CreateInsctruction(ADD, A, B);
+	memory.CreateInsctruction(OP, A);
 
-	memory.WriteByte(0xE003, 0b11100001);
-	memory.WriteByte(0xE004, 0b11110001);
+	
+	
+	
 
 	int count = 0;
-	while (count <= 3) {
+	while (count <= 10) {
 		cpu.Execute(memory);
 		count++;
 
 		
 	}
 	
+
 
 
 	return 1;

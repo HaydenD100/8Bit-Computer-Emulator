@@ -1,0 +1,4 @@
+LR A 5
+LR B 10
+ADD A B
+OP A

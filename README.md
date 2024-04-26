@@ -25,6 +25,7 @@ ADDRESS LAYOUT IN MEMORY
 
 XXXXXXXXYYYYYYYY
 
+little endian
 YYYYYYYY
 XXXXXXXX
 
@@ -38,13 +39,13 @@ Z: Register/Flag
 REGISTERS
 
 General Purpose
-A 
-B
-C
-D
-E
-G
-H
+A 0x0
+B 0x1
+C 0x2
+D 0x3
+E 0x4
+G 0x5
+H 0x6
 
 Flag register
 l = 0x0 lessthen
