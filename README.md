@@ -1,5 +1,5 @@
 
-
+```
 8 bit 
 1 ADD reg,reg/8bit reg = reg + reg/8bit
 2 ADC reg,reg/8bit reg = reg + reg/8bit + c
@@ -53,3 +53,4 @@ c = 0x2 carry
 o = 0x3 overflow
 z = 0x4 zero
 n = 0x5 negative
+```
