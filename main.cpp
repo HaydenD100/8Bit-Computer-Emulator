@@ -380,6 +380,7 @@ int main(int argc, const char* argv[]) {
 
 	//notes
 	//SUB DOSENT WORK
+
 	while (cpu.PC < 0xE010) {
 		cpu.Execute(memory);
 	}
