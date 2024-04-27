@@ -6,7 +6,7 @@
 3 AND reg,reg/8bit
 4 OR  reg,reg/8bit
 5 NOT reg
-6 CMP reg,reg/8bit Reg get comapred against reg/8bit and sets flags (l,e,z)
+6 CMP reg, reg/8bit Reg get comapred against reg/8bit and sets flags (l,e,z)
 7 LR reg, 8bit/addr Loads value or value at memory address into register
 8 WR reg/8bit, addr Writes register or 8bit value to memory
 9 JMP addr sets PC to addr
@@ -25,9 +25,9 @@ ADDRESS LAYOUT IN MEMORY
 
 XXXXXXXXYYYYYYYY
 
-little endian
-YYYYYYYY
+Big endian
 XXXXXXXX
+YYYYYYYY
 
 
 X: 4 bit instruction code

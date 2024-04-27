@@ -2,12 +2,14 @@
 #include "main.cpp"
 #include "array"
 
+
+
 struct Assembler
 {
 	//mnemonic
-	string opCodes[16] = { "null", "ADD","ADC","AND","OR","NOT","CMP","LR","WR","JMP","JMF","SUB","null","null","IP","OP" };
-	string registers[7] = { "A","B","C","D","E","G","H" };
-	string flags[6] = { "l","e","c","o","z","n" };
+	const char* opCodes[16] = { "null", "ADD","ADC","AND","OR","NOT","CMP","LR","WR","JMP","JMF","SUB","null","null","IP","OP" };
+	const char* registers[7] = { "A","B","C","D","E","G","H" };
+	const char* flags[6] = { "l","e","c","o","z","n" };
 
 	int outputLine = 0;
 	//Maximum amount of lines of code
@@ -22,21 +24,57 @@ struct Assembler
 		while (std::getline(file, line))
 		{
 			uint8_t opCode = NULL;
-			bool UsingRegister = false;
-			uint8_t reg2;
+
+			uint8_t flag;
+
+			uint8_t reg1 = 255;
+			uint8_t reg2 = 255;
+
 			uint16_t Address;
 
-			for (int i = 0; i < opCodes->size(); i++) {
-				if (line.find(opCodes[i])) {
+			string temp;
+			string strReg;
+
+			for (int i = 0; i < line.length(); i++) {
+				if (line[i] == ' ') {
+					break;
+				}
+				temp.push_back(line[i]);
+			}
+
+			for (int i = 0; i < 16; i++) {
+				if (temp == opCodes[i]) {
 					opCode = i;
 				}
 			}
-			for (int i = 0; i < registers->size(); i++) {
-				if (line.substr(line.length() - 1, line.length()).compare(registers[i])) {
-					reg2 = i;
-					UsingRegister = true;
+			int i = temp.length();
+			temp.clear();
+			temp = line[i + 1];
+			for (int i = 0; i < 7; i++) {
+				if (temp == registers[i]) {
+					reg1 = i;
 				}
 			}
+			if (i + 3 <= line.length())
+			{
+				temp.clear();
+				temp = line[i + 3];
+				for (int i = 0; i < 7; i++) {
+					if (temp == registers[i] && i != reg1) {
+						reg2 = i;
+					}
+				}
+
+			}
+			cout << "Opcode:" << (int)opCode << " Reg1:" << (int)reg1 << " Reg2:" << (int)reg2;
+
+
+
+
+
+
+
+			/*
 			if (opCode == NULL) {
 				cout << "ERROR OPCODE NOT FOUND";
 			}
@@ -45,6 +83,7 @@ struct Assembler
 			switch (opCode)
 			{
 			case ADD: {
+				break;
 			}
 			case ADC: {
 
@@ -95,9 +134,8 @@ struct Assembler
 			}
 			default:
 				break;
-
-
 			}
+			*/
 		}
 	}
 };

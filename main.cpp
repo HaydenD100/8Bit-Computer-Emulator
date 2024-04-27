@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-//#include "Assembler.h"
+
 
 using namespace std;
 
@@ -47,6 +47,7 @@ enum Flags
 
 
 
+
 struct Memory
 {
 	static constexpr int MAX_MEMORY = 65536; //2^16
@@ -79,8 +80,6 @@ struct Memory
 		byte = reg2;
 		Data[ip] = byte;
 		ip++;
-
-		
 	}
 	void CreateInsctruction(opCode code, Register reg1, uint8_t value) {
 		uint8_t byte = code;
@@ -107,6 +106,7 @@ struct Memory
 		Data[ip] = byte;
 		ip++;
 	}
+
 	void CreateInsctruction(opCode code, uint16_t address) {
 		uint8_t byte = code << 4;
 		ip++;
@@ -117,9 +117,15 @@ struct Memory
 		Data[ip] = byte;
 		ip++;
 	}
-	void CreateInsctruction(opCode code,Flags flag) {
+	void CreateInsctruction(opCode code,Flags flag, uint16_t address) {
 		uint8_t byte = code << 4;
 		byte = byte + flag;
+		Data[ip] = byte;
+		ip++;
+		byte = address;
+		Data[ip] = byte;
+		ip++;
+		byte = address >> 8;
 		Data[ip] = byte;
 		ip++;
 	}
@@ -131,7 +137,10 @@ struct Memory
 		Data[ip] = byte;
 		ip++;
 	}
+	uint16_t CreateSubroutine() {
+		return ip;
 
+	}
 };
 
 struct CPU
@@ -218,6 +227,7 @@ struct CPU
 					value = memory.ReadByte(PC);
 				}
 				Register[reg] = Register[reg] & value;
+
 				break;
 			}
 			case OR: {
@@ -256,8 +266,10 @@ struct CPU
 				if(Register[reg] == value)
 					F = F | 01000000;
 				if (Register[reg] < value)
-					F = F | 10000000;
-				if (Register[reg] = 0)
+					F = F | 10000000; 
+
+
+				if (Register[reg] == 0)
 					F = F | 00001000;
 				break;
 			}
@@ -275,7 +287,7 @@ struct CPU
 					uint16_t address = memory.ReadByte(PC);
 					address = address << 8;
 					PC++;
-					address = memory.ReadByte(PC);
+					address += memory.ReadByte(PC);
 					value = memory.ReadByte(address);
 				}
 
@@ -295,7 +307,7 @@ struct CPU
 					uint16_t address = memory.ReadByte(PC);
 					address = address << 8;
 					PC++;
-					 address = memory.ReadByte(PC);
+					 address += memory.ReadByte(PC);
 				}
 				else {
 					value = Register[reg];
@@ -303,33 +315,36 @@ struct CPU
 					uint16_t address = memory.ReadByte(PC);
 					address = address << 8;
 					PC++;
-					 address = memory.ReadByte(PC);
+					address += memory.ReadByte(PC);
 				}
 
 				memory.WriteByte(address, value);
 				break;
 			}
 			case JMP: {
-				uint16_t address = 0b0000000000000000;
 				PC++;
-				address = memory.ReadByte(PC);
+				uint16_t address = memory.ReadByte(PC);
+				PC++;
+				address += memory.ReadByte(PC);
 				address = address << 8;
-				PC++;
-				address = memory.ReadByte(PC);
+
 				PC = address;
 				break;
 			}
 			case JMF: {
 				uint8_t flag = IR & 0b00000111;
+				
+
 				if ((((F << flag) & 0b10000000) == 0b10000000))
 				{
-					uint16_t address = 0b0000000000000000;
 					PC++;
-					address = memory.ReadByte(PC);
+					uint16_t address = memory.ReadByte(PC);
 					address = address << 8;
 					PC++;
-					address = memory.ReadByte(PC);
+					address += memory.ReadByte(PC);
 					PC = address;
+
+					
 				}
 				break;
 			}
@@ -378,19 +393,13 @@ struct CPU
 						Register[reg] = Register[reg] & 0b01111111;
 					}
 				}
-
-					
 				break;
 			}
 			default:
 				break;
 		}
-
 		PC++;	
-
 	}
-
-
 
 };
 
@@ -401,8 +410,8 @@ int main(int argc, const char* argv[]) {
 	int start = 0xE000;
 	CPU cpu;
 	Memory memory;
+	
 	cpu.Initialize(memory);
-	//XXXXYZZZ
 	/*
 	//loads register with value 0b00000011 to register 0b000
 	memory.WriteByte(0xE000, 0b01110000);
@@ -416,26 +425,43 @@ int main(int argc, const char* argv[]) {
 	//Prints out A
 	memory.WriteByte(0xE006, 0b11110000);
 	*/
-	
-	memory.CreateInsctruction(LR, A, (uint8_t)0b001);
-	memory.CreateInsctruction(LR, B, (uint8_t)0b101);
-	memory.CreateInsctruction(ADD, A, B);
-	memory.CreateInsctruction(OP, A);
+
+	//count to 10
+	//Reg A = 1
+	memory.WriteByte(0xe000, 0b01110000);
+	memory.WriteByte(0xE001, 0b00000011);
+
+
+	//ADD 1 to reg A
+	memory.WriteByte(0xE002, 0b00010000);
+	memory.WriteByte(0xE003, 0b00000001);
+	memory.WriteByte(0xE004, 0b11110000);
+
+
+
+	//compare reg A with value 0b0111 (7)10
+	memory.WriteByte(0xE005, 0b01100000);
+	memory.WriteByte(0xE006, 0b00001111);
+
+	//Jump if l flag = 0
+	memory.WriteByte(0xE007, 0b10100000);
+	memory.WriteByte(0xE008, 0b11100000);
+	memory.WriteByte(0xE009, 0b00000000);
+
+
+
+
 
 	
+	//notes
+	//SUB DOSENT WORK
 	
-	
-
 	int count = 0;
-	while (count <= 10) {
+	while (count <= 100) {
 		cpu.Execute(memory);
+
 		count++;
-
-		
 	}
-	
-
-
-
+		
 	return 1;
 }
