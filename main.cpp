@@ -53,8 +53,6 @@ struct Memory
 	static constexpr int MAX_MEMORY = 65536; //2^16
 	uint8_t Data[MAX_MEMORY]; //255b of memory 
 
-	uint16_t ip = 0xE000;
-
 	void Initialize() {
 		for (int i = 0; i < MAX_MEMORY; i++) {
 			Data[i] = 0;
@@ -68,79 +66,6 @@ struct Memory
 		Data[address] = byte;
 	}
 
-
-
-	void CreateInsctruction(opCode code, Register reg1, Register reg2) {
-		uint8_t byte = code << 1;
-		byte = byte + 1;
-		byte = byte << 3;
-		byte = byte + reg1;
-		Data[ip] = byte;
-		ip++;
-		byte = reg2;
-		Data[ip] = byte;
-		ip++;
-	}
-	void CreateInsctruction(opCode code, Register reg1, uint8_t value) {
-		uint8_t byte = code;
-		byte = byte << 4;
-		byte = byte + reg1;
-		Data[ip] = byte;
-		ip++;
-		byte = value;
-		Data[ip] = byte;
-		ip++;
-
-	}
-	void CreateInsctruction(opCode code, Register reg, uint16_t address) {
-		uint8_t byte = code << 1;
-		byte = byte + 1;
-		byte = byte << 3;
-		byte = byte + reg;
-		Data[ip] = byte;
-		ip++;
-		byte = address;
-		Data[ip] = byte;
-		ip++;
-		byte = address >> 8;
-		Data[ip] = byte;
-		ip++;
-	}
-
-	void CreateInsctruction(opCode code, uint16_t address) {
-		uint8_t byte = code << 4;
-		ip++;
-		byte = address;
-		Data[ip] = byte;
-		ip++;
-		byte = address >> 8;
-		Data[ip] = byte;
-		ip++;
-	}
-	void CreateInsctruction(opCode code,Flags flag, uint16_t address) {
-		uint8_t byte = code << 4;
-		byte = byte + flag;
-		Data[ip] = byte;
-		ip++;
-		byte = address;
-		Data[ip] = byte;
-		ip++;
-		byte = address >> 8;
-		Data[ip] = byte;
-		ip++;
-	}
-	void CreateInsctruction(opCode code, Register reg) {
-		uint8_t byte = code << 1;
-		byte = byte + 1;
-		byte = byte << 3;
-		byte = byte + reg;
-		Data[ip] = byte;
-		ip++;
-	}
-	uint16_t CreateSubroutine() {
-		return ip;
-
-	}
 };
 
 struct CPU
@@ -265,12 +190,20 @@ struct CPU
 				}
 				if(Register[reg] == value)
 					F = F | 01000000;
+				else {
+					F = F & 10111111;
+				}
 				if (Register[reg] < value)
 					F = F | 10000000; 
-
+				else {
+					F = F & 01111111;
+				}
 
 				if (Register[reg] == 0)
 					F = F | 00001000;
+				else {
+					F = F & 11110111;
+				}
 				break;
 			}
 			case LR: {
@@ -426,41 +359,29 @@ int main(int argc, const char* argv[]) {
 	memory.WriteByte(0xE006, 0b11110000);
 	*/
 
-	//count to 10
+	//counts to 15
 	//Reg A = 1
 	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000011);
-
+	memory.WriteByte(0xE001, 0b00000000);
 
 	//ADD 1 to reg A
 	memory.WriteByte(0xE002, 0b00010000);
 	memory.WriteByte(0xE003, 0b00000001);
 	memory.WriteByte(0xE004, 0b11110000);
 
-
-
-	//compare reg A with value 0b0111 (7)10
+	//compare reg A with value 0b1111 (15)
 	memory.WriteByte(0xE005, 0b01100000);
 	memory.WriteByte(0xE006, 0b00001111);
 
-	//Jump if l flag = 0
+	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
 	memory.WriteByte(0xE007, 0b10100000);
 	memory.WriteByte(0xE008, 0b11100000);
 	memory.WriteByte(0xE009, 0b00000000);
 
-
-
-
-
-	
 	//notes
 	//SUB DOSENT WORK
-	
-	int count = 0;
-	while (count <= 100) {
+	while (cpu.PC < 0xE010) {
 		cpu.Execute(memory);
-
-		count++;
 	}
 		
 	return 1;
