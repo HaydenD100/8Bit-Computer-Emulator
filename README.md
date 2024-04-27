@@ -20,7 +20,7 @@ Big endian
 0x9 JMP addr				sets PC to addr
 0xa JMF flag, addr			sets PC to addr if inputed flag is set flag number XXXX0YYY YYY = flag code
 0xb SUB reg, reg/8bit		reg = reg - reg/8bit
-0xc 
+0xc                         gonna add pop and push after I make Stakc
 0xd 
 0xe IP reg					Puts input from input device(terminal) into register
 0xf OP reg					Outputs register into output device(terminal)
@@ -57,4 +57,10 @@ c 0x2 CARRY
 o 0x3 OVERFLOW
 z 0x4 ZERO
 n 0x5 NEGATIVE
+
+-------MEMORY-------------
+0x0000-0xb8ef General Storage
+0xb8f0-0xdfff Video Memory for 100x100 screen (goning to be implemted soon)
+0xe000-0xffff Instructions
+
 ```
