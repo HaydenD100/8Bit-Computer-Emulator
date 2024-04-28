@@ -307,25 +307,23 @@ struct CPU
 					PC++;
 					value = memory.ReadByte(PC);
 				}
-				value = (~value) + 0b00000001;
-				Register[reg] = Register[reg] + value;
-				Register[reg] = ~Register[reg];
-
-				if (Register[reg] - value < 0) {
+				if (value > Register[reg])
 					F = F | 0b00000100;
-					Register[reg] = ~(Register[reg] + ((~value) + 0b00000001)) + 0b00000001;
-					if (Register[reg] > 127) {
-						F = F | 0b00010000;
-						Register[reg] = Register[reg] | 0b10000000;
-					}
+				else
+					F = F & 0b11111011;
+				cout << "V1:" << (int)value << endl;
+				value = ~(value)+0b00000001;
+				cout << "V2:" << (int)value << endl;
+				uint16_t calculation = Register[reg] + value;
+				if((calculation & 0b0000000100000000) == 0b0000000100000000)
+				{
+					F = F | 0b00010000;
+					calculation = calculation | 0b0000000010000000;
 				}
 				else {
-					Register[reg] = Register[reg] + ((~value) + 0b00000001);
-					if (Register[reg] > 127) {
-						F = F & 0b11101111;
-						Register[reg] = Register[reg] & 0b01111111;
-					}
+					F = F & 0b11101111;
 				}
+				Register[reg] = (uint8_t)calculation;
 				break;
 			}
 			default:
@@ -345,44 +343,27 @@ int main(int argc, const char* argv[]) {
 	Memory memory;
 	
 	cpu.Initialize(memory);
-	/*
+	
+
+
 	//loads register with value 0b00000011 to register 0b000
 	memory.WriteByte(0xE000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000010);
-	//loads register with value 0b00000011 to register 0b001
+	memory.WriteByte(0xE001, 0b00001111);
+	//loads register with value 0b00000111 to register 0b001
 	memory.WriteByte(0xE002, 0b01110001);
-	memory.WriteByte(0xE003, 0b00000011);
-	//ADDS register A and B and stores results in A
-	memory.WriteByte(0xE004, 0b00011000);
+	memory.WriteByte(0xE003, 0b01011111);
+	//SUB register A and B and stores results in A
+	memory.WriteByte(0xE004, 0b10111000);
 	memory.WriteByte(0xE005, 0b00000001);
 	//Prints out A
 	memory.WriteByte(0xE006, 0b11110000);
-	*/
 
-	//counts to 15
-	//Reg A = 1
-	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000000);
 
-	//ADD 1 to reg A
-	memory.WriteByte(0xE002, 0b00010000);
-	memory.WriteByte(0xE003, 0b00000001);
-	memory.WriteByte(0xE004, 0b11110000);
-
-	//compare reg A with value 0b1111 (15)
-	memory.WriteByte(0xE005, 0b01100000);
-	memory.WriteByte(0xE006, 0b00001111);
-
-	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
-	memory.WriteByte(0xE007, 0b10100000);
-	memory.WriteByte(0xE008, 0b11100000);
-	memory.WriteByte(0xE009, 0b00000000);
-
-	//notes
-	//SUB DOSENT WORK
 
 	while (cpu.PC < 0xE010) {
 		cpu.Execute(memory);
+		
+
 	}
 		
 	return 1;

@@ -1,0 +1,18 @@
+//counts to 15
+	//Reg A = 1
+	memory.WriteByte(0xe000, 0b01110000);
+	memory.WriteByte(0xE001, 0b00000000);
+
+	//ADD 1 to reg A
+	memory.WriteByte(0xE002, 0b00010000);
+	memory.WriteByte(0xE003, 0b00000001);
+	memory.WriteByte(0xE004, 0b11110000);
+
+	//compare reg A with value 0b1111 (15)
+	memory.WriteByte(0xE005, 0b01100000);
+	memory.WriteByte(0xE006, 0b00001111);
+
+	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
+	memory.WriteByte(0xE007, 0b10100000);
+	memory.WriteByte(0xE008, 0b11100000);
+	memory.WriteByte(0xE009, 0b00000000);
