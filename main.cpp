@@ -31,6 +31,8 @@ enum opCode
 	JMP = 0x9,
 	JMF = 0xa,
 	SUB = 0xb,
+	PUSH = 0xc,
+	POP = 0xd,
 	IP = 0xe,
 	OP = 0xf
 };
@@ -72,6 +74,8 @@ struct CPU
 {
 	//Program Counter
 	uint16_t PC;
+	//Stack pointer (points to next spot on stack) 
+	uint16_t SP;
 	//Insctrution register
 	uint8_t IR;
 
@@ -85,7 +89,8 @@ struct CPU
 
 	void Initialize(Memory &memory) {
 		F = 0;
-		PC = 0xE000; // Starts program pointer at memory address 57344
+		SP = 0xffff; 
+		PC = 0xe000; // Starts program pointer at memory address 57344
 		memory.Initialize();
 
 
@@ -96,8 +101,6 @@ struct CPU
 
 		uint8_t opCode = IR >> 4;
 		uint8_t valueTwo = NULL;
-
-
 		switch (opCode)
 		{
 			case ADD: {
@@ -281,20 +284,6 @@ struct CPU
 				}
 				break;
 			}
-			case IP: {
-				int input; //This is need as cin dosent work with uint8_t
-				uint8_t reg = IR & 0b00000111;
-
-				cin >> input;
-				Register[reg] = input;
-				break;
-			
-			}
-			case OP: {
-				uint8_t reg = IR & 0b00000111;
-				cout << (int)Register[reg] << endl;
-				break;
-			}
 			case SUB: {
 				uint8_t reg = IR & 0b00000111;
 				uint8_t value = NULL;
@@ -311,11 +300,9 @@ struct CPU
 					F = F | 0b00000100;
 				else
 					F = F & 0b11111011;
-				cout << "V1:" << (int)value << endl;
 				value = ~(value)+0b00000001;
-				cout << "V2:" << (int)value << endl;
 				uint16_t calculation = Register[reg] + value;
-				if((calculation & 0b0000000100000000) == 0b0000000100000000)
+				if ((calculation & 0b0000000100000000) == 0b0000000100000000)
 				{
 					F = F | 0b00010000;
 					calculation = calculation | 0b0000000010000000;
@@ -326,6 +313,48 @@ struct CPU
 				Register[reg] = (uint8_t)calculation;
 				break;
 			}
+
+			case PUSH: {
+				uint8_t reg = IR & 0b00000111;
+				uint8_t value = NULL;
+				if ((IR & 0b00001000) == 0b00001000)
+				{
+					value = Register[reg];
+				}
+				else {
+					PC++;
+					value = memory.ReadByte(PC);
+				}
+
+				memory.WriteByte(SP, value);
+				SP--;
+				break;
+			}
+			case POP: {
+				if(SP >= 0xffff)
+					break;
+				SP++;
+				uint8_t reg = IR & 0b00000111;
+				Register[reg] = memory.ReadByte(SP);
+				
+
+				break;
+			}
+			case IP: {
+				int input; //This is need as cin dosent work with uint8_t
+				uint8_t reg = IR & 0b00000111;
+
+				cin >> input;
+				Register[reg] = input;
+				break;
+			
+			}
+			case OP: {
+				uint8_t reg = IR & 0b00000111;
+				cout << (int)Register[reg] << endl;
+				break;
+			}
+			
 			default:
 				break;
 		}
@@ -346,24 +375,19 @@ int main(int argc, const char* argv[]) {
 	
 
 
-	//loads register with value 0b00000011 to register 0b000
-	memory.WriteByte(0xE000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00001111);
-	//loads register with value 0b00000111 to register 0b001
-	memory.WriteByte(0xE002, 0b01110001);
-	memory.WriteByte(0xE003, 0b01011111);
-	//SUB register A and B and stores results in A
-	memory.WriteByte(0xE004, 0b10111000);
-	memory.WriteByte(0xE005, 0b00000001);
-	//Prints out A
-	memory.WriteByte(0xE006, 0b11110000);
+
+	//push A onto stack
+	memory.WriteByte(0xe002, 0b11000000);
+	memory.WriteByte(0xe003, 0b00000011);
+	//pop stack and put into B;
+	memory.WriteByte(0xe004, 0b11010001);
+	//print b to terminal
+	memory.WriteByte(0xE005, 0b11110001);
 
 
 
 	while (cpu.PC < 0xE010) {
 		cpu.Execute(memory);
-		
-
 	}
 		
 	return 1;
