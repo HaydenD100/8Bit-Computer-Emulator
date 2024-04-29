@@ -376,13 +376,37 @@ int main(int argc, const char* argv[]) {
 
 
 
-	//push A onto stack
-	memory.WriteByte(0xe002, 0b11000000);
-	memory.WriteByte(0xe003, 0b00000011);
-	//pop stack and put into B;
-	memory.WriteByte(0xe004, 0b11010001);
-	//print b to terminal
-	memory.WriteByte(0xE005, 0b11110001);
+	//counts to 15
+	//Reg A = 1
+	memory.WriteByte(0xe000, 0b01110000);
+	memory.WriteByte(0xE001, 0b00000001);
+	//reg C = 0
+	memory.WriteByte(0xe002, 0b01110000);
+	memory.WriteByte(0xE003, 0b00000001);
+	//Reg B = 0
+	memory.WriteByte(0xe004, 0b01110001);
+	memory.WriteByte(0xE005, 0b00000000);
+	//push A onto Stack
+	memory.WriteByte(0xe006, 11001000);
+	//ADD B to A
+	memory.WriteByte(0xE007, 0b00011000);
+	memory.WriteByte(0xE008, 0b00000001);
+
+	//ADD 1 to c
+	memory.WriteByte(0xE009, 0b00010010);
+	memory.WriteByte(0xE00a, 0b00000001);
+	//Compare 
+	memory.WriteByte(0xE00b, 0b01100010);
+	memory.WriteByte(0xE00c, 0b00000100);
+	//POP stack and put into B
+	memory.WriteByte(0xE00d, 0b11010001);
+	memory.WriteByte(0xE00e, 0b11110000);
+
+	memory.WriteByte(0xE00f, 0b10100000);
+	memory.WriteByte(0xE010, 0b11100000);
+	memory.WriteByte(0xE011, 0b00000000);
+	
+
 
 
 
