@@ -403,8 +403,8 @@ int main(int argc, const char* argv[]) {
 
 
 
-
-	while (cpu.PC < 0xE0ff) {
+	
+	while (cpu.PC < 0xE009) {
 		cpu.Execute(memory);
 	}
 		

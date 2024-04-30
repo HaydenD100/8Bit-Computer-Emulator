@@ -1,13 +1,21 @@
+# Machine Description
+
+8-bit Data width
+16-bit address bus (64 KB)
+7 General purpose registers
+16 Instructions
+1 Flag register with 6 diffrent flags
+I/O for program communication using terminal
+
+
+
+
+
+
+
+
 
 ```
-------Info-------
-Big endian
-7 General purpose 8-bit register + Flags register [l,e,c,o,z,n,0,0]
-16-bit memory address for 65535bytes of memory or 64KB
-16 instructions
-
-
-
 ------Instructions---------
 0x0 
 0x1 ADD reg,8bit/reg		reg = reg + reg/8bit
@@ -26,20 +34,22 @@ Big endian
 0xe IP reg					Puts input from input device(terminal) into register
 0xf OP reg					Outputs register into output device(terminal)
 
+```
 
+Machine code layout
 
---------MACHINE CODE LAYOUT----------
+```
 XXXXYZZZ AAAAAAAA BBBBBBBB
 
 X: 4 bit instruction code
-Y: 0 if argument is value, 1 if argument is a register or address if its 8bit/addr (0/1)
+Y: 0 for first paramter and 1 for second paramater eg 8bit/reg 8bit value = 0, reg = 1
 Z: Register/Flag
-A: Second paramter (flag/register/value) or first byte of 16bit address
+A: Second paramter register, value or first byte of 16bit address
 B: Second byte of 16bit address
+```
 
-
-
-----------REGISTERS---------
+Registers
+```
 General Purpose
 A 0x0
 B 0x1
@@ -53,8 +63,9 @@ H 0x6
 16bit PC (Program Counter)
 8bit IR (Insctruction Register/Current Insctruction)
 
-
-Flag
+```
+Flags
+```
 [l,e,c,o,z,n,0,0]
 
 l 0x0 LESS
@@ -63,12 +74,14 @@ c 0x2 CARRY
 o 0x3 OVERFLOW
 z 0x4 ZERO
 n 0x5 NEGATIVE
+```
 
 
--------MEMORY-------------
-0x0000-0xb8ef General Storage
-0xb8f0-0xdfff Video Memory for 100x100 screen (goning to be implemted soon)
-0xe000-0xfffe Instructions
-0xffff The stack starts at 0xffff and goes down from there
+Memory layout
 
 ```
+0x0000-0xdfff General Storage
+0xe000-0xfffe Instructions
+0xffff The stack starts at 0xffff and goes down from there
+```
+
