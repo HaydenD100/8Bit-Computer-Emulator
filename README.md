@@ -1,5 +1,5 @@
 # 8-Bit Computer
-Custom 8-Bit computer losely based of the 6502.
+Custom 8-Bit computer emulator losely based of the 6502 written in C++.
 
 # Machine Description
 
