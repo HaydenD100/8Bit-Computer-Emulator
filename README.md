@@ -21,21 +21,21 @@ I/O for program communication using terminal
 ```
 ------Instructions---------
 0x0 
-0x1 ADD reg,8bit/reg  reg = reg + reg/8bit
-0x2 ADC reg,8bit/reg  reg = reg + reg/8bit + c
-0x3 AND reg,8bit/reg  reg = reg & reg/8bit
-0x4 OR  reg,8bit/reg  reg = reg | reg/8bit
-0x5 NOT reg  reg = ~reg
-0x6 CMP reg, 8bit/reg  Reg get comapred against reg/8bit and sets flags (l,e,z)
-0x7 LR reg, 8bit/addr  Loads value or value at memory address into register
-0x8 WR 8bit/reg, addr  Writes register or 8bit value to memory
-0x9 JMP addr  sets PC to addr
-0xa JMF flag, addr  sets PC to addr if inputed flag is set flag number XXXX0YYY YYY = flag code
-0xb SUB reg, 8bit/reg  reg = reg - reg/8bit
-0xc PUSH 8bit/reg  push the value in a register or an 8bit value onto the stack
-0xd POP  reg  pop the first value in the stack and put it in reg
-0xe IP reg  Puts input from input device(terminal) into register
-0xf OP reg  Outputs register into output device(terminal)
+0x1 ADD reg,8bit/reg      reg = reg + reg/8bit
+0x2 ADC reg,8bit/reg      reg = reg + reg/8bit + c
+0x3 AND reg,8bit/reg      reg = reg & reg/8bit
+0x4 OR  reg,8bit/reg      reg = reg | reg/8bit
+0x5 NOT reg               reg = ~reg
+0x6 CMP reg, 8bit/reg     Reg get comapred against reg/8bit and sets flags (l,e,z)
+0x7 LR reg, 8bit/addr     Loads value or value at memory address into register
+0x8 WR 8bit/reg, addr     Writes register or 8bit value to memory
+0x9 JMP addr              sets PC to addr
+0xa JMF flag, addr        sets PC to addr if inputed flag is set flag number XXXX0YYY YYY = flag code
+0xb SUB reg, 8bit/reg     reg = reg - reg/8bit
+0xc PUSH 8bit/reg         push the value in a register or an 8bit value onto the stack
+0xd POP  reg              pop the top value in the stack and put it in reg
+0xe IP reg                Puts input from input device(terminal) into register
+0xf OP reg                Outputs register into output device(terminal)
 
 ```
 
