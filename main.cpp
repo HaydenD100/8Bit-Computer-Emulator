@@ -258,6 +258,7 @@ struct CPU
 				break;
 			}
 			case JMP: {
+				cout << "jumped" << endl;
 				PC++;
 				uint16_t address = memory.ReadByte(PC);
 				PC++;
@@ -296,10 +297,7 @@ struct CPU
 					PC++;
 					value = memory.ReadByte(PC);
 				}
-				if (value > Register[reg])
-					F = F | 0b00000100;
-				else
-					F = F & 0b11111011;
+
 				value = ~(value)+0b00000001;
 				uint16_t calculation = Register[reg] + value;
 				if ((calculation & 0b0000000100000000) == 0b0000000100000000)
@@ -376,41 +374,37 @@ int main(int argc, const char* argv[]) {
 
 
 
+
+
+
 	//counts to 15
 	//Reg A = 1
 	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000001);
-	//reg C = 0
-	memory.WriteByte(0xe002, 0b01110000);
+	memory.WriteByte(0xE001, 0b00000000);
+
+	//ADD 1 to reg A
+	memory.WriteByte(0xE002, 0b00010000);
 	memory.WriteByte(0xE003, 0b00000001);
-	//Reg B = 0
-	memory.WriteByte(0xe004, 0b01110001);
-	memory.WriteByte(0xE005, 0b00000000);
-	//push A onto Stack
-	memory.WriteByte(0xe006, 11001000);
-	//ADD B to A
-	memory.WriteByte(0xE007, 0b00011000);
-	memory.WriteByte(0xE008, 0b00000001);
+	//prints out reg A
+	memory.WriteByte(0xE004, 0b11110000);
 
-	//ADD 1 to c
-	memory.WriteByte(0xE009, 0b00010010);
-	memory.WriteByte(0xE00a, 0b00000001);
-	//Compare 
-	memory.WriteByte(0xE00b, 0b01100010);
-	memory.WriteByte(0xE00c, 0b00000100);
-	//POP stack and put into B
-	memory.WriteByte(0xE00d, 0b11010001);
-	memory.WriteByte(0xE00e, 0b11110000);
+	//compare reg A with value 0b1111 (15)
+	memory.WriteByte(0xE005, 0b01100000);
+	memory.WriteByte(0xE006, 0b00001111);
 
-	memory.WriteByte(0xE00f, 0b10100000);
-	memory.WriteByte(0xE010, 0b11100000);
-	memory.WriteByte(0xE011, 0b00000000);
+	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
+	memory.WriteByte(0xE007, 0b10100000);
+	memory.WriteByte(0xE008, 0b11100000);
+	memory.WriteByte(0xE009, 0b00000000);
+
+
+
 	
 
 
 
 
-	while (cpu.PC < 0xE010) {
+	while (cpu.PC < 0xE0ff) {
 		cpu.Execute(memory);
 	}
 		
