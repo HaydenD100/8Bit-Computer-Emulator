@@ -1,3 +1,6 @@
+# 8-Bit Computer
+Custom 8-Bit computer losely based of the 6502.
+
 # Machine Description
 
 8-bit Data width
