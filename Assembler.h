@@ -5,17 +5,6 @@ using namespace std;
 
 struct Assembler
 {
-	//mnemonic
-	const char* opCodes[16] = { "null", "ADD","ADC","AND","OR","NOT","CMP","LR","WR","JMP","JMF","SUB","null","null","IP","OP" };
-	const char* registers[7] = { "A","B","C","D","E","G","H" };
-	const char* flags[6] = { "l","e","c","o","z","n" };
-
-	int outputLine = 0;
-	//Maximum amount of lines of code
-	uint8_t Data[8191];
-
-
-
 	vector<uint8_t> Assemble(string path) {
 		uint16_t MemoryStart = 0xe000;
 
