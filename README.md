@@ -7,7 +7,7 @@ Custom 8-Bit computer emulator enspired by the 6502 written in C++.
 16-bit address bus (64 KB)
 7 General purpose registers
 16 Instructions
-1 Flag register with 6 diffrent flags
+1 Flag register with 5 diffrent flags
 I/O for program communication using terminal
 
 
@@ -35,7 +35,7 @@ I/O for program communication using terminal
 0xc PUSH 8bit/reg         push the value in a register or an 8bit value onto the stack
 0xd POP  reg              pop the top value in the stack and put it in reg
 0xe IP reg                Puts input from input device(terminal) into register
-0xf OP reg                Outputs register into output device(terminal)
+0xf OP string/reg         Outputs register or string into output device(terminal)
 
 ```
 

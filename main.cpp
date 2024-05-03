@@ -373,9 +373,23 @@ struct CPU
 
 		}
 		case OP: {
+			
+			
 			uint8_t reg = IR & 0b00000111;
-			cout << (int)Register[reg] << endl;
-			break;
+			int stringSize = 0;
+			if ((IR & 0b00001000) == 0b00001000)
+			{
+				cout << (int)Register[reg] << endl;
+				break;
+			}
+			
+			PC++;
+			stringSize = memory.ReadByte(PC);
+			for (int i = 0; i < stringSize; i++) {
+				PC++;
+				cout << memory.ReadByte(PC);
+			}
+			cout << endl;
 		}
 
 		default:
@@ -399,23 +413,27 @@ int main(int argc, const char* argv[]) {
 
 
 
-	/*
+	
 
 
 	//counts to 15
-	//Reg A = 1
 	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000001);
+	memory.WriteByte(0xE001, 0b00000000);
 
-	memory.WriteByte(0xe002, 0b01110001);
-	memory.WriteByte(0xe003, 0b00000100	);
-
-	memory.WriteByte(0xe004, 0b10111000);
-	memory.WriteByte(0xe005, 0b00000001);
-
-
+	//ADD 1 to reg A
+	memory.WriteByte(0xE002, 0b00010000);
+	memory.WriteByte(0xE003, 0b00000001);
 	//prints out reg A
-	memory.WriteByte(0xE006, 0b11110000);
+	memory.WriteByte(0xE004, 0b11110000);
+
+	//compare reg A with value 0b1111 (15)
+	memory.WriteByte(0xE005, 0b01100000);
+	memory.WriteByte(0xE006, 0b00001111);
+
+	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
+	memory.WriteByte(0xE007, 0b10100000);
+	memory.WriteByte(0xE008, 0b11100000);
+	memory.WriteByte(0xE009, 0b00000000);
 
 
 
@@ -427,11 +445,8 @@ int main(int argc, const char* argv[]) {
 	while (cpu.PC < 0xE009) {
 		cpu.Execute(memory);
 	}
-	*/
-	uint8_t value1 = 0;
+	
 
-
-	cout << (int)c;
 
 
 

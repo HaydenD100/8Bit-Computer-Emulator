@@ -18,4 +18,31 @@
 	memory.WriteByte(0xE008, 0b11100000);
 	memory.WriteByte(0xE009, 0b00000000);
 
+//HELLO WORLD
+	memory.WriteByte(0xE000, 0b11110000);
+	//string size
+	memory.WriteByte(0xE001, 0b00001011);
+	//h
+	memory.WriteByte(0xE002, 0b01001000);
+	//e
+	memory.WriteByte(0xE003, 0b01000101);
+	//l
+	memory.WriteByte(0xE004, 0b01001100);
+	//l
+	memory.WriteByte(0xE005, 0b01001100);
+	//o
+	memory.WriteByte(0xE006, 0b01001111);
+	//space
+	memory.WriteByte(0xE007, 0b00100000);
+	//w
+	memory.WriteByte(0xE008, 0b01010111);
+	//o
+	memory.WriteByte(0xE009, 0b01001111);
+	//r
+	memory.WriteByte(0xE00a, 0b01010010);
+	//l
+	memory.WriteByte(0xE00b, 0b01001100);
+	//d
+	memory.WriteByte(0xE00c, 0b01000100);
+
 
