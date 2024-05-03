@@ -82,7 +82,7 @@ Memory layout
 ```
 
 # Assembler
-Converts custom assembly langauge into machine code. Using a custom built lexer and also a custom build phaser to analiyze and generate code.
+Converts custom assembly langauge into machine code. Using a custom built lexer and a custom build phaser to analiyze and generate code.
 
 # Programing the Computer
 The Assembler assembles all the code in the TestCode.txt file but this can be changed by changing what filepath is passed to Assemble()
