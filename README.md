@@ -27,7 +27,7 @@ I/O for program communication using terminal
 0xa JMF flag, addr        sets PC to addr if inputed flag is set flag number XXXX0YYY YYY = flag code
 0xb SUB reg, 8bit/reg     reg = reg - reg/8bit
 0xc PUSH 8bit/reg         push the value in a register or an 8bit value onto the stack
-0xd POP  reg              pop the top value in the stack and put it in reg
+0xd POP reg               pop the top value in the stack and put it in reg
 0xe IP reg                Puts input from input device(terminal) into register
 0xf OP string/reg         Outputs register or string into output device(terminal)
 

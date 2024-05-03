@@ -23,7 +23,9 @@ struct Assembler
 		vector<string> jmpKeyWords;
 		vector<uint16_t> jmpAddress;
 
-		//
+		uint16_t EndAddress;
+
+		//requests
 		vector<string> jmpKeyWordsReq;
 		vector<int> jmpAddressReq;
 		
@@ -38,23 +40,28 @@ struct Assembler
 		{
 			vector<string> tokenizedString;
 
+			//lexer
 			string token = "";
 			for (char x : line)
 			{
-				
 				if (x != ' ') {
 					token = token + x;
 				}
 				else {
+					if (token.size() <= 0)
+						continue;
+					tokenizedString.push_back(token);
+					token = "";
+					
+				}
+				if (x == line[line.length() - 1] && token != "" && token.size() > 0) {
 					tokenizedString.push_back(token);
 					token = "";
 				}
-				if (x == line[line.length() - 1] && token != "") {
-					tokenizedString.push_back(token);
-					token = "";
-				}
-				
 			}
+
+			
+
 
 			//stores the memory address of a jump point;
 			if (tokenizedString[0][tokenizedString[0].length() - 1] == ':') {
@@ -63,12 +70,7 @@ struct Assembler
 				jmpAddress.push_back(MemoryStart + machineCode.size() - 1);
 			}
 			
-			if (tokenizedString[0] == "Start") {
-
-				tokenizedString[1].erase(0, 1);
-				const char* chartoString = tokenizedString[1].c_str();
-				MemoryStart = (int16_t)strtol(chartoString, NULL, 2);
-			}
+			
 
 			if (tokenizedString[0][0] == '/') {
 				continue;
@@ -399,17 +401,22 @@ struct Assembler
 			}
 
 			if (tokenizedString[0] == "JMP") {
+
 				uint16_t addr = 0;
 
-				for (int i = 0; i < jmpKeyWords.size() - 1; i++) {
+				for (int i = 0; i < jmpKeyWords.size(); i++) {
 					if (jmpKeyWords[i] == tokenizedString[1]) {
 						addr = jmpAddress[i];
+						break;
+
 					}
 				}
 				if (addr == 0) {
+
 					jmpKeyWordsReq.push_back(tokenizedString[1]);
 					jmpAddressReq.push_back(machineCode.size() + 1);
 				}
+				
 
 				uint8_t byte = 0b10010000;
 				machineCode.push_back(byte);
@@ -417,7 +424,7 @@ struct Assembler
 				machineCode.push_back(byte);
 				byte = addr;
 				machineCode.push_back(byte);
-				
+
 			}
 
 			if (tokenizedString[0] == "JMF") {
@@ -521,6 +528,7 @@ struct Assembler
 				}
 				else {
 					uint8_t byte = 0b11001000 + parm;
+					machineCode.push_back(byte);
 				}
 			}
 			if (tokenizedString[0] == "POP") {
@@ -567,37 +575,42 @@ struct Assembler
 				}
 				
 			}
-			cout << currentLine << endl;
 			currentLine++;
+
+			
 		}
 		uint16_t addr = 0;
 		for (int jr = 0; jr < jmpKeyWordsReq.size();jr++) {
 			for (int i = 0; i < jmpKeyWords.size(); i++) {
 				if (jmpKeyWords[i] == jmpKeyWordsReq[jr]) {
-					uint8_t byte = addr >> 8;
+					
 					addr = jmpAddress[i];
+					uint8_t byte = addr >> 8;
 					machineCode[jmpAddressReq[jr]] = byte;
 					byte = addr;
 					machineCode[jmpAddressReq[jr] + 1] = byte;
+
 
 				}
 			}
 			if (addr == 0) {
 				cout << "ERROR Jump point:" << jmpKeyWordsReq[jr] << "Not Found" << endl;
 			}
+
 		}
 		
-	
 		
 		/*
 		for (int i = 0; i < machineCode.size(); i++) {
 			cout << (int)machineCode[i] << endl;
 		}
 		*/
+		
+		
 
 
 		
-
+		
 		return machineCode;
 		
 	}

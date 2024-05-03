@@ -1,3 +1,4 @@
+//counts to 15
 LR A $00
 count:
 ADD A $01

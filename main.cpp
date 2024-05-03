@@ -259,14 +259,14 @@ struct CPU
 		case WR: {
 			uint8_t reg = IR & 0b00000111;
 			uint8_t value = NULL;
-			uint16_t address = 0b0000000000000000;
+			uint16_t address;
 
 			if ((IR & 0b00001000) == 0b00000000)
 			{
 				PC++;
 				value = memory.ReadByte(PC);
 				PC++;
-				uint16_t address = memory.ReadByte(PC);
+				address = memory.ReadByte(PC);
 				address = address << 8;
 				PC++;
 				address += memory.ReadByte(PC);
@@ -274,7 +274,7 @@ struct CPU
 			else {
 				value = Register[reg];
 				PC++;
-				uint16_t address = memory.ReadByte(PC);
+				address = memory.ReadByte(PC);
 				address = address << 8;
 				PC++;
 				address += memory.ReadByte(PC);
@@ -380,7 +380,7 @@ struct CPU
 			int stringSize = 0;
 			if ((IR & 0b00001000) == 0b00001000)
 			{
-				cout << (int)Register[reg] << endl;
+				cout << (int)(int8_t)Register[reg] << endl;
 				break;
 			}
 			
