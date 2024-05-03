@@ -69,12 +69,12 @@ H 0x6
 ```
 Flags
 ```
-[l,e,c,o,z,0,0,0]
+[l,e,c,v,z,0,0,0]
 
 l 0x0 LESS
 e 0x1 EQUALS
 c 0x2 CARRY
-o 0x3 OVERFLOW
+v 0x3 OVERFLOW
 z 0x4 ZERO
 ```
 

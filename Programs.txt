@@ -7,7 +7,7 @@
 	memory.WriteByte(0xE002, 0b00010000);
 	memory.WriteByte(0xE003, 0b00000001);
 	//prints out reg A
-	memory.WriteByte(0xE004, 0b11110000);
+	memory.WriteByte(0xE004, 0b11111000);
 
 	//compare reg A with value 0b1111 (15)
 	memory.WriteByte(0xE005, 0b01100000);

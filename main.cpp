@@ -204,7 +204,8 @@ struct CPU
 		}
 		case CMP: {
 			uint8_t reg = IR & 0b00000111;
-			uint8_t value = NULL;
+			int8_t value = NULL;
+			int valueReg = Register[reg];
 			if ((IR & 0b00001000) == 0b00001000)
 			{
 				PC++;
@@ -214,18 +215,18 @@ struct CPU
 				PC++;
 				value = memory.ReadByte(PC);
 			}
-			if (Register[reg] == value)
+			if (valueReg == value)
 				F = F | 01000000;
 			else {
 				F = F & 10111111;
 			}
-			if (Register[reg] < value)
+			if (valueReg < value)
 				F = F | 10000000;
 			else {
 				F = F & 01111111;
 			}
 
-			if (Register[reg] == 0)
+			if (valueReg == 0)
 				F = F | 00001000;
 			else {
 				F = F & 11110111;
@@ -424,7 +425,7 @@ int main(int argc, const char* argv[]) {
 	memory.WriteByte(0xE002, 0b00010000);
 	memory.WriteByte(0xE003, 0b00000001);
 	//prints out reg A
-	memory.WriteByte(0xE004, 0b11110000);
+	memory.WriteByte(0xE004, 0b11111000);
 
 	//compare reg A with value 0b1111 (15)
 	memory.WriteByte(0xE005, 0b01100000);
