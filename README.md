@@ -1,5 +1,5 @@
 # 8-Bit Computer
-Custom 8-Bit computer emulator enspired by the 6502 written in C++.
+Custom 8-Bit computer emulator enspired by the 6502 written in C++. With a custom Assembler that converts the custom Assembly into custom machine code.
 
 # Machine Description
 
@@ -9,12 +9,6 @@ Custom 8-Bit computer emulator enspired by the 6502 written in C++.
 16 Instructions
 1 Flag register with 5 diffrent flags
 I/O for program communication using terminal
-
-
-
-
-
-
 
 
 
@@ -87,3 +81,8 @@ Memory layout
 0xffff The stack starts at 0xffff and goes down from there
 ```
 
+# Assembler
+Converts custom assembly langauge into machine code. Using a custom built lexer and also a custom build phaser to analiyze and generate code.
+
+# Programing the Computer
+The Assembler assembles all the code in the TestCode.txt file but this can be changed by chaning what filepath is passed to Assemble()

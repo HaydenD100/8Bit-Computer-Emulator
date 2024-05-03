@@ -1,6 +1,6 @@
 LR A $00
-he:
+count:
 ADD A $01
 OP A
-CMP A $0f
-JMF LESS he
+CMP A $1f
+JMF LESS count

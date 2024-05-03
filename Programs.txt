@@ -1,48 +1,7 @@
 //counts to 15
-	//Reg A = 1
-	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000000);
-
-	//ADD 1 to reg A
-	memory.WriteByte(0xE002, 0b00010000);
-	memory.WriteByte(0xE003, 0b00000001);
-	//prints out reg A
-	memory.WriteByte(0xE004, 0b11111000);
-
-	//compare reg A with value 0b1111 (15)
-	memory.WriteByte(0xE005, 0b01100000);
-	memory.WriteByte(0xE006, 0b00001111);
-
-	//Jump if l flag = 0 (reg A has a value less then 0b1111 (15)
-	memory.WriteByte(0xE007, 0b10100000);
-	memory.WriteByte(0xE008, 0b11100000);
-	memory.WriteByte(0xE009, 0b00000000);
-
-//HELLO WORLD
-	memory.WriteByte(0xE000, 0b11110000);
-	//string size
-	memory.WriteByte(0xE001, 0b00001011);
-	//h
-	memory.WriteByte(0xE002, 0b01001000);
-	//e
-	memory.WriteByte(0xE003, 0b01000101);
-	//l
-	memory.WriteByte(0xE004, 0b01001100);
-	//l
-	memory.WriteByte(0xE005, 0b01001100);
-	//o
-	memory.WriteByte(0xE006, 0b01001111);
-	//space
-	memory.WriteByte(0xE007, 0b00100000);
-	//w
-	memory.WriteByte(0xE008, 0b01010111);
-	//o
-	memory.WriteByte(0xE009, 0b01001111);
-	//r
-	memory.WriteByte(0xE00a, 0b01010010);
-	//l
-	memory.WriteByte(0xE00b, 0b01001100);
-	//d
-	memory.WriteByte(0xE00c, 0b01000100);
-
-
+LR A $00
+count:
+ADD A $01
+OP A
+CMP A $1f
+JMF LESS count
