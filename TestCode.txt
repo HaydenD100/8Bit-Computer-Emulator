@@ -1,7 +1,13 @@
-//counts to 15
-LR A $00
-count:
-ADD A $01
+//Prints out the first 10 fibonacci numbers
+OP 10 fibonacci numbers:
+LR A $01
+LR B $00
+LR C $00
+jp:
+PUSH A
+ADD A B
 OP A
-CMP A $0f
-JMF LESS count
+POP B
+ADD C $01
+CMP C $0a
+JMF LESS jp

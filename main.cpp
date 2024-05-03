@@ -340,7 +340,7 @@ struct CPU
 
 		case PUSH: {
 			uint8_t reg = IR & 0b00000111;
-			uint8_t value = NULL;
+			int8_t value = NULL;
 			if ((IR & 0b00001000) == 0b00001000)
 			{
 				value = Register[reg];
