@@ -413,14 +413,16 @@ int main(int argc, const char* argv[]) {
 	cpu.Initialize(memory);
 
 	
-	vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
+	//vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
+	vector<uint8_t> mCode = assembler.Assemble("C:\\Users\\kokok\\OneDrive\\Desktop\\Code\\Home\\C++\\Test-8\\TestCode.txt");
+	
 	
 	
 	for (int i = 0; i < mCode.size(); i++) {
 		memory.WriteByte(0xE000 + i, mCode[i]);
 	}
 
-	while (cpu.PC < 0xE010) {
+	while (cpu.PC < 0xE000 + mCode.size()) {
 		cpu.Execute(memory);
 	}
 	

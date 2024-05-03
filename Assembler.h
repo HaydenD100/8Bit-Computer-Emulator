@@ -23,6 +23,11 @@ struct Assembler
 		vector<string> jmpKeyWords;
 		vector<uint16_t> jmpAddress;
 
+		//
+		vector<string> jmpKeyWordsReq;
+		vector<int> jmpAddressReq;
+		
+
 		vector<uint8_t> machineCode;
 
 		std::ifstream file(path);
@@ -50,12 +55,14 @@ struct Assembler
 				}
 				
 			}
+
 			//stores the memory address of a jump point;
 			if (tokenizedString[0][tokenizedString[0].length() - 1] == ':') {
 				string keyWord = tokenizedString[0].substr(0, tokenizedString[0].length() - 1);
 				jmpKeyWords.push_back(keyWord);
-				jmpAddress.push_back(MemoryStart + machineCode.size()-1);
+				jmpAddress.push_back(MemoryStart + machineCode.size() - 1);
 			}
+			
 			if (tokenizedString[0] == "Start") {
 
 				tokenizedString[1].erase(0, 1);
@@ -400,8 +407,8 @@ struct Assembler
 					}
 				}
 				if (addr == 0) {
-					cout << "ERROR JMP address is incorrect," << " line:" << currentLine << endl;
-					break;
+					jmpKeyWordsReq.push_back(tokenizedString[1]);
+					jmpAddressReq.push_back(machineCode.size() + 1);
 				}
 
 				uint8_t byte = 0b10010000;
@@ -414,6 +421,8 @@ struct Assembler
 			}
 
 			if (tokenizedString[0] == "JMF") {
+				
+
 				uint16_t addr = 0;
 				uint16_t flag = GetFlag(tokenizedString[1]);
 
@@ -430,8 +439,9 @@ struct Assembler
 					}
 				}
 				if (addr == 0) {
-					cout << "ERROR JMP address is incorrect," << " line:" << currentLine << endl;
-					break;
+
+					jmpKeyWordsReq.push_back(tokenizedString[2]);
+					jmpAddressReq.push_back(machineCode.size() + 1);
 				}
 
 				uint8_t byte = 0b10100000 + flag;
@@ -441,7 +451,7 @@ struct Assembler
 				byte = addr;
 				machineCode.push_back(byte);
 
-				
+
 
 			}
 
@@ -557,16 +567,35 @@ struct Assembler
 				}
 				
 			}
-			
+			cout << currentLine << endl;
 			currentLine++;
 		}
+		uint16_t addr = 0;
+		for (int jr = 0; jr < jmpKeyWordsReq.size();jr++) {
+			for (int i = 0; i < jmpKeyWords.size(); i++) {
+				if (jmpKeyWords[i] == jmpKeyWordsReq[jr]) {
+					uint8_t byte = addr >> 8;
+					addr = jmpAddress[i];
+					machineCode[jmpAddressReq[jr]] = byte;
+					byte = addr;
+					machineCode[jmpAddressReq[jr] + 1] = byte;
+
+				}
+			}
+			if (addr == 0) {
+				cout << "ERROR Jump point:" << jmpKeyWordsReq[jr] << "Not Found" << endl;
+			}
+		}
 		
+	
 		
 		/*
 		for (int i = 0; i < machineCode.size(); i++) {
 			cout << (int)machineCode[i] << endl;
 		}
 		*/
+
+
 		
 
 		return machineCode;
