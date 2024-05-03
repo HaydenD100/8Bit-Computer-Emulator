@@ -13,7 +13,7 @@
 	memory.WriteByte(0xE005, 0b01100000);
 	memory.WriteByte(0xE006, 0b00001111);
 
-	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
+	//Jump if l flag = 0 (reg A has a value less then 0b1111 (15)
 	memory.WriteByte(0xE007, 0b10100000);
 	memory.WriteByte(0xE008, 0b11100000);
 	memory.WriteByte(0xE009, 0b00000000);

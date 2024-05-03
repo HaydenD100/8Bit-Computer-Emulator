@@ -23,12 +23,12 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assembler.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
+    <Text Include="Programs.txt" />
+    <Text Include="TestCode.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="TestCode.txt" />
-    <Text Include="Programs.txt" />
+    <ClInclude Include="Assembler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+#include "Assembler.h"
 
 
 
@@ -66,7 +69,6 @@ struct Memory
 	void WriteByte(uint16_t address, uint8_t byte) {
 		Data[address] = byte;
 	}
-
 };
 
 struct CPU
@@ -282,13 +284,11 @@ struct CPU
 			break;
 		}
 		case JMP: {
-			cout << "jumped" << endl;
 			PC++;
 			uint16_t address = memory.ReadByte(PC);
+			address = address << 8;
 			PC++;
 			address += memory.ReadByte(PC);
-			address = address << 8;
-
 			PC = address;
 			break;
 		}
@@ -405,50 +405,37 @@ struct CPU
 
 int main(int argc, const char* argv[]) {
 
-	int start = 0xE000;
+	
 	CPU cpu;
 	Memory memory;
+	Assembler assmebler;
 
 	cpu.Initialize(memory);
 
-
-
+	
+	vector<uint8_t> mCode = assmebler.Assemble("C:\\Users\\kokok\\OneDrive\\Desktop\\Code\\Home\\C++\\Test-8\\TestCode.txt");
+	
+	
+	for (int i = 0; i < mCode.size(); i++) {
+		memory.WriteByte(0xE000 + i, mCode[i]);
+	}
+	
+	
 
 	
 
 
-	//counts to 15
-	memory.WriteByte(0xe000, 0b01110000);
-	memory.WriteByte(0xE001, 0b00000000);
-
-	//ADD 1 to reg A
-	memory.WriteByte(0xE002, 0b00010000);
-	memory.WriteByte(0xE003, 0b00000001);
-	//prints out reg A
-	memory.WriteByte(0xE004, 0b11111000);
-
-	//compare reg A with value 0b1111 (15)
-	memory.WriteByte(0xE005, 0b01100000);
-	memory.WriteByte(0xE006, 0b00001111);
-
-	//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
-	memory.WriteByte(0xE007, 0b10100000);
-	memory.WriteByte(0xE008, 0b11100000);
-	memory.WriteByte(0xE009, 0b00000000);
 
 
 
 
 
-
-
-
-	while (cpu.PC < 0xE009) {
+	while (cpu.PC < 0xE010) {
 		cpu.Execute(memory);
 	}
 	
-
-
+	
+	
 
 
 
