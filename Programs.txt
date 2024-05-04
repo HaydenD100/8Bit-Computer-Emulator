@@ -1,5 +1,4 @@
 //counts to 15
-OP !This program counts to 15
 LR A $00
 count:
 ADD A $01
@@ -7,32 +6,20 @@ OP A
 CMP A $0f
 JMF LESS count
 
-
-//HAND COMPILED VERSION OF THE PROGRAM ABOVE
-//Reg A = 1
-memory.WriteByte(0xe000, 0b01110000);
-memory.WriteByte(0xE001, 0b00000000);
-memory.WriteByte(0xE001, 0b00000001);
-memory.WriteByte(0xe002, 0b01110001);
-memory.WriteByte(0xe003, 0b00000100	);
-memory.WriteByte(0xe004, 0b10111000);
-memory.WriteByte(0xe005, 0b00000001);
-//ADD 1 to reg A
-memory.WriteByte(0xE002, 0b00010000);
-memory.WriteByte(0xE003, 0b00000001);
-//prints out reg A
-memory.WriteByte(0xE004, 0b11110000);
-memory.WriteByte(0xE006, 0b11110000);
-//compare reg A with value 0b1111 (15)
-memory.WriteByte(0xE005, 0b01100000);
-memory.WriteByte(0xE006, 0b00001111);
-//Jump if l flag = 1 (reg A has a value less then 0b1111 (15)
-memory.WriteByte(0xE007, 0b10100000);
-memory.WriteByte(0xE008, 0b11100000);
-memory.WriteByte(0xE009, 0b00000000);
+//Hand compile of the above code for comparison
+01110000
+00000000
+00010000
+00000001
+11111000
+01100000
+00001111
+10100000
+11100000
 
 
 //Prints out the first 10 fibonacci numbers
+OP Prints out the first 10 fibonacci numbers
 LR A $01
 LR B $00
 LR C $00

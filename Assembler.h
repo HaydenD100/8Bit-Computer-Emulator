@@ -592,12 +592,13 @@ struct Assembler
 
 		}
 		
-		
+		//This will print out the complied machine code for debugging purposes
 		/*
 		for (int i = 0; i < machineCode.size(); i++) {
-			cout << (int)machineCode[i] << endl;
+			cout <<"0x" << hex << (int)machineCode[i] << endl;
 		}
 		*/
+		
 		
 		
 
