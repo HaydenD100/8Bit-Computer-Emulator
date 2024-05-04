@@ -413,8 +413,8 @@ int main(int argc, const char* argv[]) {
 	cpu.Initialize(memory);
 
 	
-	//vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
-	vector<uint8_t> mCode = assembler.Assemble("C:\\Users\\kokok\\OneDrive\\Desktop\\Code\\Home\\C++\\Test-8\\TestCode.txt");
+	vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
+
 	
 	
 	
