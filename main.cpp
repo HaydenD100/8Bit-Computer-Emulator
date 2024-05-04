@@ -415,7 +415,7 @@ int main(int argc, const char* argv[]) {
 	
 	vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
 
-	
+
 	
 	
 	for (int i = 0; i < mCode.size(); i++) {

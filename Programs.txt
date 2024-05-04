@@ -6,7 +6,7 @@ OP A
 CMP A $0f
 JMF LESS count
 
-//Hand compile of the above code for comparison
+//Hand complied machine code for the above asm code for refrence
 01110000
 00000000
 00010000
@@ -21,7 +21,7 @@ JMF LESS count
 //Prints out the first 10 fibonacci numbers
 OP Prints out the first 10 fibonacci numbers
 LR A $01
-LR B $00
+LR B $01
 LR C $00
 jp:
 PUSH A
