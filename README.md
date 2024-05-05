@@ -76,13 +76,17 @@ z 0x4 ZERO
 Memory layout
 
 ```
-0x0000-0xdfff General Storage
+0x0000-0x000a Storage For CPU
+- 0x0001 current key being pressed
+- 0x0002 if the user has request to shut the window
+0x000b-0xA567 General Storage
+0xA568-dfff Graphics Memory Storage for 150x100 Screen
 0xe000-0xfffe Instructions
 0xffff The stack starts at 0xffff and goes down from there
 ```
 
 # Assembler
-Converts custom assembly langauge into machine code. Using a custom built lexer and a custom build phaser to analiyze and generate code.
+Converts custom assembly langauge into machine code. Using a custom built lexer and a custom built phaser to analiyze and generate code.
 
 # Programing the Computer
 The Assembler assembles all the code in the TestCode.txt file but this can be changed by changing what filepath is passed to Assemble()

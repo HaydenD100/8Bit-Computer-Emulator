@@ -4,6 +4,11 @@
 #include <vector>
 
 #include "Assembler.h"
+#include "Memory.h"
+#include "Graphics.h"
+
+
+
 
 
 
@@ -52,24 +57,7 @@ enum Flags
 
 
 
-struct Memory
-{
-	static constexpr int MAX_MEMORY = 65536; //2^16
-	uint8_t Data[MAX_MEMORY]; //255b of memory 
 
-	void Initialize() {
-		for (int i = 0; i < MAX_MEMORY; i++) {
-			Data[i] = 0;
-		}
-	}
-
-	uint8_t ReadByte(uint16_t address) {
-		return Data[address];
-	}
-	void WriteByte(uint16_t address, uint8_t byte) {
-		Data[address] = byte;
-	}
-};
 
 struct CPU
 {
@@ -410,11 +398,15 @@ int main(int argc, const char* argv[]) {
 	Memory memory;
 	Assembler assembler;
 
+	Graphics graphicsCard;
+#
+
 	cpu.Initialize(memory);
+	graphicsCard.Initialize();
 
 	
-	vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
-
+	//vector<uint8_t> mCode = assembler.Assemble("..\\..\\TestCode.txt");
+	vector<uint8_t> mCode = assembler.Assemble("C:\\Users\\kokok\\OneDrive\\Desktop\\Code\\Home\\C++\\Test-8\\TestCode.txt");
 
 	
 	
@@ -422,12 +414,18 @@ int main(int argc, const char* argv[]) {
 		memory.WriteByte(0xE000 + i, mCode[i]);
 	}
 
-	while (cpu.PC < 0xE000 + mCode.size()) {
+	while (true) {
 		cpu.Execute(memory);
+
+		graphicsCard.UpdateColour(memory);
+		graphicsCard.GetInput(memory);
+
+		if (memory.ReadByte(0x0002) == 1)
+			break;
+
 	}
 	
-	
-	
+	graphicsCard.DestoryWindow();
 
 
 

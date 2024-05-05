@@ -1,13 +1,6 @@
 //Prints out the first 10 fibonacci numbers
-OP Prints out the first 10 fibonacci numbers
-LR A $01
+loop:
+LR A #$0001
 LR B $01
-LR C $00
-jp:
-PUSH A
-ADD A B
-OP A
-POP B
-ADD C $01
-CMP C $0a
-JMF LESS jp
+WR B #$A56f
+JMP loop
