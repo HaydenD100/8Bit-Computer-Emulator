@@ -1,7 +1,7 @@
-loop:
-ADD B $01
-WR B #$A56f
-CMP B $04
-JMF LESS loop
-LR B $01
-JMP loop
+//counts to 15
+LR A $00
+count:
+ADD A $01
+OP A
+CMP A $0f
+JMF LESS count

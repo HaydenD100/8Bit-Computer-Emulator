@@ -340,6 +340,13 @@ struct Assembler
 
 			if (tokenizedString[0] == "WR") {
 				int8_t value = GetReg(tokenizedString[1]);
+
+				int byteAddrFlag = 0;
+				//check if you are adding a register to the second byte of an address
+				if (tokenizedString.size() == 4)
+					byteAddrFlag = 1;
+
+
 				if (value == 10) {
 					if (tokenizedString[1][0] == '$') {
 						tokenizedString[1].erase(0, 1);
@@ -352,12 +359,18 @@ struct Assembler
 						value = (int8_t)strtol(chartoString, NULL, 2);
 					}
 					uint8_t byte = 0b10000000;
+					if(byteAddrFlag == 1)
+						byte = 0b10000001;
 					machineCode.push_back(byte);
 					byte = value;
 					machineCode.push_back(byte);
 				}
 				else {
-					uint8_t byte = 0b10001000 + value;
+					uint8_t byte = 0b10001000;
+					if (byteAddrFlag == 1)
+						byte = 0b10001001;
+					machineCode.push_back(byte);
+					byte = value;//register
 					machineCode.push_back(byte);
 				}
 				uint16_t addr;
@@ -378,10 +391,25 @@ struct Assembler
 						cout << "ERROR second paramter incorrect," << " line:" << currentLine << endl;
 						break;
 					}
-					uint8_t byte = addr >> 8;
-					machineCode.push_back(byte);
-					byte = addr;
-					machineCode.push_back(byte);
+					uint8_t byte;
+					
+					if (byteAddrFlag == 1) {
+						byte = addr;
+						machineCode.push_back(byte);
+						byte = GetReg(tokenizedString[3]);;//register
+						if (byte == 10) {
+							cout << "ERROR Register not found," << " line:" << currentLine << endl;
+							break;
+						}
+						machineCode.push_back(byte);
+					}
+					else {
+						byte = addr >> 8;
+						machineCode.push_back(byte);
+						byte = addr;
+						machineCode.push_back(byte);
+					}
+					
 				}
 				else {
 					cout << "ERROR address is incorrect," << " line:" << currentLine << endl;

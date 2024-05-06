@@ -244,11 +244,12 @@ struct CPU
 			break;
 		}
 		case WR: {
-			uint8_t reg = IR & 0b00000111;
+			uint8_t parm = IR & 0b00001111;
+			uint8_t reg = NULL;
 			uint8_t value = NULL;
 			uint16_t address;
 
-			if ((IR & 0b00001000) == 0b00000000)
+			if ((IR & 0b00001111) == 0b00000000)
 			{
 				PC++;
 				value = memory.ReadByte(PC);
@@ -258,13 +259,33 @@ struct CPU
 				PC++;
 				address += memory.ReadByte(PC);
 			}
-			else {
-				value = Register[reg];
+			else if ((IR & 0b00001111) == 0b00000001) {
+				PC++;
+				value = memory.ReadByte(PC);
+				PC++;
+				address = memory.ReadByte(PC);
+				address = address << 8;
+				PC++;
+				address = Register[memory.ReadByte(PC)];
+			}
+			else if ((IR & 0b00001111) == 0b00001000) {
+				PC++;
+				value = Register[memory.ReadByte(PC)];
 				PC++;
 				address = memory.ReadByte(PC);
 				address = address << 8;
 				PC++;
 				address += memory.ReadByte(PC);
+			}
+			else if ((IR & 0b00001111) == 0b00001001) {
+				PC++;
+				value = Register[memory.ReadByte(PC)];
+				PC++;
+				address = memory.ReadByte(PC);
+				address = address << 8;
+				PC++;
+				address = address + Register[memory.ReadByte(PC)];
+				
 			}
 
 			memory.WriteByte(address, value);
