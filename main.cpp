@@ -312,7 +312,6 @@ struct CPU
 				PC++;
 				address += memory.ReadByte(PC);
 				PC = address;
-				cout << "Address:0x" << hex << address << endl;
 			}
 			else {
 				PC++;
