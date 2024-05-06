@@ -302,8 +302,6 @@ struct CPU
 		}
 		case JMF: {
 			uint8_t flag = IR & 0b00000111;
-
-
 			if ((((F << flag) & 0b10000000) == 0b10000000))
 			{
 				PC++;
@@ -312,8 +310,13 @@ struct CPU
 				PC++;
 				address += memory.ReadByte(PC);
 				PC = address;
-
+				cout << "Address:0x" << hex << address << endl;
 			}
+			else {
+				PC++;
+				PC++;
+			}
+			
 
 			break;
 		}
@@ -444,6 +447,7 @@ int main(int argc, const char* argv[]) {
 
 		if (memory.ReadByte(0x0002) == 1)
 			break;
+		cout << "last insctruction:0x" << hex << (int)cpu.IR << endl;
 
 	}
 	

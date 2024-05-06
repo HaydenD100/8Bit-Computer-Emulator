@@ -477,6 +477,7 @@ struct Assembler
 
 
 
+
 			}
 
 			if (tokenizedString[0] == "SUB") {
@@ -615,7 +616,6 @@ struct Assembler
 				}
 			}
 			if (addr == 0) {
-				cout << "ERROR Jump point:" << jmpKeyWordsReq[jr] << "Not Found" << endl;
 			}
 
 		}
@@ -626,6 +626,7 @@ struct Assembler
 			cout <<"0x" << hex << (int)machineCode[i] << endl;
 		}
 		*/
+		
 		
 		
 		

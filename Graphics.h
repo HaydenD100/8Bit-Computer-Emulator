@@ -42,15 +42,15 @@ struct Graphics {
 				break;
 			}
 			case 2: {
-				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//red
+				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//green
 				break;
 			}
 			case 3: {
-				SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);//red
+				SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);//blue
 				break;
 			}
 			case 4: {
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);//red
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);//white
 				break;
 			}
 			default:
