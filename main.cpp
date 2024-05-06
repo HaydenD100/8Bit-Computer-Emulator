@@ -93,7 +93,6 @@ struct CPU
 		switch (opCode)
 		{
 		case ADD: {
-
 			uint8_t reg = IR & 0b00000111;
 
 			int8_t value1 = Register[reg];
@@ -293,8 +292,8 @@ struct CPU
 				address += memory.ReadByte(PC);
 				PC = address;
 
-
 			}
+
 			break;
 		}
 		case SUB: {
@@ -385,6 +384,7 @@ struct CPU
 			break;
 		}
 		PC++;
+
 	}
 
 };
@@ -415,6 +415,7 @@ int main(int argc, const char* argv[]) {
 	}
 
 	while (true) {
+
 		cpu.Execute(memory);
 
 		graphicsCard.UpdateColour(memory);

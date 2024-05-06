@@ -1,6 +1,7 @@
-//Prints out the first 10 fibonacci numbers
 loop:
-LR A #$0001
-LR B $01
+ADD B $01
 WR B #$A56f
+CMP B $04
+JMF LESS loop
+LR B $01
 JMP loop
