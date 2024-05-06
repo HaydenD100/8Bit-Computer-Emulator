@@ -1,9 +1,1 @@
-LR C $68
-loop:
-ADD B $01
-ADD C $01
-WR B #$A5 C
-CMP B $04
-JMF LESS loop
-LR B $00
-JMP loop
+OP hey there whats up

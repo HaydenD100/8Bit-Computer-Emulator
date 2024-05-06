@@ -1,0 +1,108 @@
+Short Documentation on the assembly language for this CPU with examples for each instructions
+
+Indication
+$ means the number after is hexadecimal
+% means the number after is binary
+# means the number after is an address, the address can either be in hexadecimal or binary (#$0a12)
+
+Subroutines
+Subroutines are used to specify a spot in memory that the JMP or JMF commands can jump too. To add a Subroutine to your code specify the name followed by ":".
+
+--Example--
+1 LR C $01
+2 loop:
+3 ADD C $01
+4 JMP loop
+
+The above code will jump to the code at line 3 when the CPU runs the command JMP loop.
+
+---------Instructions--------------
+
+ADD
+Adds a value to a register and then stores it into the register, this value can either be a byte or the value from another register.
+ADD reg value/reg
+ADD A B
+ADD A $03
+
+ADC
+Adds a value to a register with carry, if the carry flag is set, if the flag is set the flag will be unset.
+ADC reg value/reg
+ADC A B
+ADC A $03
+
+AND
+does the bitwise operation AND on a register with a value or another register and then stores that value into the first register
+AND reg value/reg
+AND A B
+AND A $03
+
+OR
+does the bitwise operation OR on a register with a value or another register and then stores that value into the first register
+OR reg value/reg
+OR A B
+OR A $03
+
+NOT
+does the bitwise operation NOT on a register and then stores that value into the register
+NOT reg
+NOT A
+
+CMP
+comapres a register to a value, then sets the flags (LESS, EQUALS, ZERO)
+CMP reg value/reg
+CMP A B
+CMP A $03
+
+LR
+Loads a register with a value or a value from memory
+LR reg value/Memory Address
+LR A $01
+LR A #$A000
+
+WR
+Writes a 8bit value or a register value to memory
+WR value/reg Memory Address/first byte of memory address reg for second byte of address
+WR A #$A000
+WR $01 #$A000
+WR $01 #$A0 C (If C = #$01 the address is #$A001)
+
+JMP
+Jumps the specified subroutine
+JMP subroutine
+JMP loop
+
+JMF
+Jumps the specified subroutine if the specifed flag is raised
+JMF FLAG subroutine
+JMF LESS loop
+
+SUB 
+Subtracts a value to a register and then stores it into the register, this value can either be a byte or the value from another register.
+SUB reg value/reg
+SUB A B
+SUB A $03
+
+PUSH
+pushes a value onto the stack updating the CPU's stack pointer;
+PUSH value/register
+PUSH A
+PUSH $01
+
+POP
+pops the top value of the stack to a register, updating the CPU's stack pointer;
+POP register
+POP A
+
+IP
+gets input from the user from the terminal and then puts that value in a register
+IP register
+IP A
+
+OP
+outputs a string or a register to the terminal.
+OP String/Register
+OP Hello World
+OP A
+
+
+

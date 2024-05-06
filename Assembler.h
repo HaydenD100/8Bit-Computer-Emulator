@@ -576,20 +576,19 @@ struct Assembler
 				if (reg == 10) {
 					uint8_t byte = 0b11110000;
 					machineCode.push_back(byte);
-					byte = line.size() - 3;
+					byte = line.size();
 					machineCode.push_back(byte);
 
-					
-					for (int w = 1; w < tokenizedString.size(); w++) {
-						for (int c = 0; c < tokenizedString[w].size(); c++) {
-							byte = tokenizedString[w][c];
-							machineCode.push_back(byte);
-						}
-						if (w < tokenizedString.size() - 1) {
-							byte = ' ';
-							machineCode.push_back(byte);
+					int i = 0;
+					for (char x : line)
+					{
+						i++;
+						if (i > 3) {
+							machineCode.push_back(x);
 						}
 					}
+
+					
 				}
 				else {
 					uint8_t byte = 0b11111000 + reg;

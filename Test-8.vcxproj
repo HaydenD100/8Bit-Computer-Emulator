@@ -139,6 +139,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="ASMdoc.txt" />
     <Text Include="Programs.txt" />
     <Text Include="TestCode.txt" />
   </ItemGroup>

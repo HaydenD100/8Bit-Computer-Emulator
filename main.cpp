@@ -223,6 +223,8 @@ struct CPU
 			break;
 		}
 		case LR: {
+			uint8_t parm = IR & 0b00001111;
+
 			uint8_t reg = IR & 0b00000111;
 			uint8_t value = NULL;
 			if ((IR & 0b00001000) == 0b00000000)
@@ -447,7 +449,7 @@ int main(int argc, const char* argv[]) {
 
 		if (memory.ReadByte(0x0002) == 1)
 			break;
-		cout << "last insctruction:0x" << hex << (int)cpu.IR << endl;
+		//cout << "last insctruction:0x" << hex << (int)cpu.IR << endl;
 
 	}
 	

@@ -25,6 +25,7 @@
   <ItemGroup>
     <Text Include="Programs.txt" />
     <Text Include="TestCode.txt" />
+    <Text Include="ASMdoc.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assembler.h">

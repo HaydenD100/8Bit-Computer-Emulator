@@ -32,15 +32,13 @@ ADD C $01
 CMP C $0a
 JMF LESS jp
 
-
-loop:
+//Graphics test
 LR C $68
-POP C
-ADD C $01
-PUSH C
+loop:
 ADD B $01
+ADD C $01
 WR B #$A5 C
 CMP B $04
 JMF LESS loop
-LR B $01
+LR B $00
 JMP loop
